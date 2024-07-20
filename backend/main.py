@@ -12,7 +12,7 @@ app = FastAPI()
 
 # List of allowed origins
 origins = [
-    "http://localhost:3000",  # React development server
+    "http://3.65.228.31:3000",  # React development server
     # Add other origins if needed
 ]
 
