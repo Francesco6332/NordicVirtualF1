@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/NordicVirtualF1/static/css/main.34d57fdb.css",
+    "main.js": "/NordicVirtualF1/static/js/main.da0b0882.js",
+    "index.html": "/NordicVirtualF1/index.html",
+    "main.34d57fdb.css.map": "/NordicVirtualF1/static/css/main.34d57fdb.css.map",
+    "main.da0b0882.js.map": "/NordicVirtualF1/static/js/main.da0b0882.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.34d57fdb.css",
+    "static/js/main.da0b0882.js"
+  ]
+}
