@@ -18,7 +18,7 @@ function StewardDashboard() {
 
   const handleUpdate = async (id, status) => {
     const token = localStorage.getItem('token');
-    await fetch(`http://localhost:8000/api/incidents/${id}`, {
+    await fetch(`http://18.156.77.207:8000/api/incidents/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

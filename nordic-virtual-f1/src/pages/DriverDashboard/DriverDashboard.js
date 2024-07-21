@@ -6,7 +6,7 @@ function DriverDashboard() {
   useEffect(() => {
     const fetchIncidents = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/api/incidents', {
+      const response = await fetch('http://18.156.77.207:8000/api/incidents', {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await response.json();

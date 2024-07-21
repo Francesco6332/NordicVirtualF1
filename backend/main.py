@@ -15,7 +15,7 @@ app = FastAPI()
 # List of allowed origins
 origins = [
     "http://localhost:3000",  # React development server
-    "https://francesco6332.github.io"# Add other origins if needed
+    "https://francesco6332.github.io/NordicVirtualF1"# Add other origins if needed
 ]
 
 # Adding CORS middleware to the FastAPI app

@@ -6,7 +6,7 @@ function News() {
   useEffect(() => {
     // Fetch news from the backend
     const fetchNews = async () => {
-      const response = await fetch('http://localhost:8000/api/news');
+      const response = await fetch('http://18.156.77.207:8000/api/news');
       const data = await response.json();
       setNews(data);
     };
