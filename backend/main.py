@@ -12,8 +12,8 @@ app = FastAPI()
 
 # List of allowed origins
 origins = [
-    "http://3.65.228.31:3000",  # React development server
-    # Add other origins if needed
+    "http://localhost:3000",  # React development server
+    "https://francesco6332.github.io"# Add other origins if needed
 ]
 
 # Adding CORS middleware to the FastAPI app
@@ -27,7 +27,7 @@ app.add_middleware(
 
 # Database setup
 DATABASE = 'data/nordic_f1.db'
-SECRET_KEY = "a-secret-key" # Replace with a secure key in production
+SECRET_KEY = "a-secret-key"  # Replace with a secure key in production
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

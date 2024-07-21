@@ -1,7 +1,6 @@
 // frontend/src/App.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar/NavBar';
 import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import DriverDashboard from './pages/DriverDashboard/DriverDashboard';
@@ -11,6 +10,7 @@ import NewsPage from './pages/NewsPage/NewsPage';
 import StandingsPage from './pages/StandingsPage/StandingsPage';
 import CalendarPage from './pages/CalendarPage/CalendarPage';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import Navbar from './components/Navbar/NavBar';
 import './App.css';
 
 function App() {

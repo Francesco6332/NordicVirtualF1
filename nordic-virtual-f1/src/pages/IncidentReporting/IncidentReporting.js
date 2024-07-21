@@ -1,104 +1,66 @@
-// frontend/src/pages/IncidentReporting.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function IncidentReporting() {
-  const [incident, setIncident] = useState('');
-  const [status, setStatus] = useState('Aperto');
+function ReportIncident() {
   const [title, setTitle] = useState('');
-  const [submittedIncidents, setSubmittedIncidents] = useState([]);
+  const [description, setDescription] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Fetch incidents when the component mounts
-    fetch('http://127.0.0.1:8000/api/incidents', {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        setSubmittedIncidents(data);
-      })
-      .catch(error => {
-        console.error('Error fetching incidents:', error);
-      });
-  }, []);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch('http://127.0.0.1:8000/api/report_incident', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify({ title, description: incident, status }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Incident reported:', data);
-        // Optionally, update the list of incidents
-        setSubmittedIncidents([...submittedIncidents, data]);
-        setIncident('');
-        setTitle('');
-        setStatus('Aperto');
-      })
-      .catch(error => {
-        console.error('Error reporting incident:', error);
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch('http://localhost:8000/api/report_incident', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          driver_id: 1 // Update this with the actual driver ID
+        })
       });
+      const data = await response.json();
+      if (response.ok) {
+        navigate('/driver-dashboard');
+      } else {
+        alert('Failed to report incident');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred');
+    }
   };
 
   return (
-    <div className="incident-reporting">
-      <h2>Report an Incident</h2>
-      <form onSubmit={handleSubmit} className="incident-form">
+    <div className="report-incident">
+      <h1>Report an Incident</h1>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Title:</label>
+          <label htmlFor="title">Title</label>
           <input
             type="text"
+            id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="form-control"
             required
           />
         </div>
         <div className="form-group">
-          <label>Description:</label>
+          <label htmlFor="description">Description</label>
           <textarea
-            value={incident}
-            onChange={(e) => setIncident(e.target.value)}
-            className="form-control"
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             required
-          />
+          ></textarea>
         </div>
-        <div className="form-group">
-          <label>Status:</label>
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="form-control"
-            required
-          >
-            <option value="Aperto">Opened</option>
-            <option value="In Review">On Review</option>
-            <option value="Closed">Closed</option>
-          </select>
-        </div>
-        <button type="submit" className="btn btn-primary">Submit Report</button>
+        <button type="submit">Submit</button>
       </form>
-      <div className="submitted-incidents">
-        <h3>Submitted Incidents</h3>
-        <ul>
-          {submittedIncidents.map((incident) => (
-            <li key={incident.id}>
-              <strong>{incident.title}</strong>: {incident.description} (Status: {incident.status})
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }
 
-export default IncidentReporting;
+export default ReportIncident;

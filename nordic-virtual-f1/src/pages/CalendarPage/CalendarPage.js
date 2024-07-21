@@ -1,24 +1,26 @@
-// frontend/src/pages/CalendarPage.js
-import React, { useState, useEffect } from 'react';
-import './CalendarPage.css';
+import React, { useEffect, useState } from 'react';
 
-function CalendarPage() {
+function Calendar() {
   const [races, setRaces] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/calendar')
-      .then(response => response.json())
-      .then(data => setRaces(data))
-      .catch(error => console.error('Error:', error));
+    const fetchRaces = async () => {
+      const response = await fetch('http://localhost:8000/api/calendar');
+      const data = await response.json();
+      setRaces(data);
+    };
+
+    fetchRaces();
   }, []);
 
   return (
-    <div className="container">
-      <h2>Race Calendar</h2>
+    <div className="calendar">
+      <h1>Race Calendar</h1>
       <ul>
         {races.map((race) => (
           <li key={race.id}>
-            {race.date} - {race.grand_prix}
+            <h2>{race.grand_prix}</h2>
+            <p>Date: {race.date}</p>
           </li>
         ))}
       </ul>
@@ -26,4 +28,4 @@ function CalendarPage() {
   );
 }
 
-export default CalendarPage;
+export default Calendar;

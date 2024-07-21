@@ -1,13 +1,12 @@
-// frontend/src/index.js
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 import App from './App';
+import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-root.render(
-  <Router>
+ReactDOM.render(
+  <BrowserRouter>
     <App />
-  </Router>
+  </BrowserRouter>,
+  document.getElementById('root')
 );

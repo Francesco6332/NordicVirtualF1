@@ -1,58 +1,49 @@
-// frontend/src/pages/StewardDashboard.js
-import React, { useState, useEffect } from 'react';
-import './StewardsDashboard.css';
+import React, { useEffect, useState } from 'react';
 
 function StewardDashboard() {
   const [incidents, setIncidents] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    fetch('http://127.0.0.1:8000/api/incidents', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-      .then(response => response.json())
-      .then(data => setIncidents(data))
-      .catch(error => console.error('Error:', error));
+    const fetchIncidents = async () => {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:8000/api/incidents', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await response.json();
+      setIncidents(data);
+    };
+
+    fetchIncidents();
   }, []);
 
-  const handleUpdateStatus = (id, status) => {
+  const handleUpdate = async (id, status) => {
     const token = localStorage.getItem('token');
-    fetch(`http://127.0.0.1:8000/api/incidents/${id}`, {
+    await fetch(`http://localhost:8000/api/incidents/${id}`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ status: status }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        setIncidents(incidents.map(incident => (incident.id === id ? data : incident)));
-      })
-      .catch(error => console.error('Error:', error));
+      body: JSON.stringify({ status })
+    });
+    const updatedIncidents = incidents.map((incident) =>
+      incident.id === id ? { ...incident, status } : incident
+    );
+    setIncidents(updatedIncidents);
   };
 
   return (
-    <div className="container">
-      <h2>Steward Dashboard</h2>
-      <h3>All Incident Reports</h3>
+    <div className="dashboard">
+      <h1>Steward Dashboard</h1>
+      <h2>All Incidents</h2>
       <ul>
         {incidents.map((incident) => (
           <li key={incident.id}>
-            <h4>{incident.title}</h4>
+            <h3>{incident.title}</h3>
             <p>{incident.description}</p>
             <p>Status: {incident.status}</p>
             {incident.status !== 'closed' && (
-              <div>
-                <button onClick={() => handleUpdateStatus(incident.id, 'on-review')}>
-                  Mark as On-Review
-                </button>
-                <button onClick={() => handleUpdateStatus(incident.id, 'closed')}>
-                  Close
-                </button>
-              </div>
+              <button onClick={() => handleUpdate(incident.id, 'closed')}>Close</button>
             )}
           </li>
         ))}

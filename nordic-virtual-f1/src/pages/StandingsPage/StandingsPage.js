@@ -1,24 +1,27 @@
-// frontend/src/pages/StandingsPage.js
-import React, { useState, useEffect } from 'react';
-import './StandingsPage.css';
+import React, { useEffect, useState } from 'react';
 
-function StandingsPage() {
+function Standings() {
   const [standings, setStandings] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/standings')
-      .then(response => response.json())
-      .then(data => setStandings(data))
-      .catch(error => console.error('Error:', error));
+    const fetchStandings = async () => {
+      const response = await fetch('http://localhost:8000/api/standings');
+      const data = await response.json();
+      setStandings(data);
+    };
+
+    fetchStandings();
   }, []);
 
   return (
-    <div className="container">
-      <h2>Standings</h2>
+    <div className="standings">
+      <h1>Standings</h1>
       <ul>
         {standings.map((driver) => (
           <li key={driver.id}>
-            {driver.position}. {driver.name} - {driver.points} points
+            <h2>{driver.name}</h2>
+            <p>Position: {driver.position}</p>
+            <p>Points: {driver.points}</p>
           </li>
         ))}
       </ul>
@@ -26,4 +29,4 @@ function StandingsPage() {
   );
 }
 
-export default StandingsPage;
+export default Standings;
