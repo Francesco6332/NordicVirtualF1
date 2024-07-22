@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import './StandingsPage.css'; // Import the CSS file for styling
 
-function Standings() {
+function StandingsPage() {
   const [standings, setStandings] = useState([]);
 
   useEffect(() => {
     const fetchStandings = async () => {
-      const response = await fetch('http://18.156.77.207:8000/api/standings');
+      const response = await fetch('http://localhost:8000/api/standings');
       const data = await response.json();
       setStandings(data);
     };
@@ -14,19 +15,24 @@ function Standings() {
   }, []);
 
   return (
-    <div className="standings">
-      <h1>Standings</h1>
-      <ul>
+    <div className="standings-container">
+      <h1 className="standings-title">F1 Standings</h1>
+      <div className="standings-table">
+        <div className="table-header">
+          <div className="header-item">Position</div>
+          <div className="header-item">Driver</div>
+          <div className="header-item">Points</div>
+        </div>
         {standings.map((driver) => (
-          <li key={driver.id}>
-            <h2>{driver.name}</h2>
-            <p>Position: {driver.position}</p>
-            <p>Points: {driver.points}</p>
-          </li>
+          <div key={driver.id} className="table-row">
+            <div className="table-cell position">{driver.position}</div>
+            <div className="table-cell driver-name">{driver.name}</div>
+            <div className="table-cell points">{driver.points}</div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
 
-export default Standings;
+export default StandingsPage;

@@ -1,76 +1,37 @@
-// frontend/src/App.js
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
-import LoginPage from './pages/LoginPage/LoginPage';
-import DriverDashboard from './pages/DriverDashboard/DriverDashboard';
-import StewardDashboard from './pages/StewardsDashboard/StewardsDashboard';
-import IncidentReporting from './pages/IncidentReporting/IncidentReporting';
 import NewsPage from './pages/NewsPage/NewsPage';
 import StandingsPage from './pages/StandingsPage/StandingsPage';
 import CalendarPage from './pages/CalendarPage/CalendarPage';
+import IncidentReporting from './pages/IncidentReporting/IncidentReporting';
+import DriverDashboard from './pages/DriverDashboard/DriverDashboard';
+import StewardsDashboard from './pages/StewardsDashboard/StewardsDashboard';
+import LoginPage from './pages/LoginPage/LoginPage';
+import Register from './pages/Register/Register';
+import NavBar from './components/Navbar/NavBar';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import Navbar from './components/Navbar/NavBar';
 import './App.css';
 
 function App() {
+  const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
+
   return (
-    <div>
-      <Navbar />
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/driver-dashboard"
-            element={
-              <PrivateRoute>
-                <DriverDashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/steward-dashboard"
-            element={
-              <PrivateRoute>
-                <StewardDashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/report-incident"
-            element={
-              <PrivateRoute>
-                <IncidentReporting />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/news"
-            element={
-              <PrivateRoute>
-                <NewsPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/standings"
-            element={
-              <PrivateRoute>
-                <StandingsPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/calendar"
-            element={
-              <PrivateRoute>
-                <CalendarPage />
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-      </div>
+    <div className="App">
+      {token && <NavBar />}
+      <Routes>
+        <Route path="/" Component={HomePage} />
+        <Route path="/login" Component={LoginPage} />
+        <Route path="/register" Component={Register} />
+        <Route path="/news" element={<PrivateRoute element={NewsPage} />} />
+        <Route path="/standings" element={<PrivateRoute element={StandingsPage} />} />
+        <Route path="/calendar" element={<PrivateRoute element={CalendarPage} />} />
+        <Route path="/report-incident" element={token && role === 'driver' ? <PrivateRoute element={IncidentReporting} /> : <Navigate to="/login" />} />
+        <Route path="/driver-dashboard" element={token && role === 'driver' ? <PrivateRoute element={DriverDashboard} /> : <Navigate to="/login" />} />
+        <Route path="/steward-dashboard" element={token && role === 'steward' ? <PrivateRoute element={StewardsDashboard} /> : <Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </div>
   );
 }

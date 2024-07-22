@@ -1,63 +1,52 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './LoginPage.css';  // Import the CSS file
 
-function Login() {
+const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://18.156.77.207:8000/token', {
+      const response = await fetch('http://localhost:8000/token', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          username,
-          password
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
       });
-      const data = await response.json();
+
       if (response.ok) {
+        const data = await response.json();
         localStorage.setItem('token', data.access_token);
         navigate('/');
       } else {
-        alert('Login failed');
+        const error = await response.json();
+        alert(`Login failed: ${error.detail}`);
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred');
+      alert('Login failed');
     }
   };
 
   return (
     <div className="login-container">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <label>
+          Username:
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+        </label>
+        <label>
+          Password:
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </label>
         <button type="submit">Login</button>
       </form>
+      <a href="/" className="back-home-button">Back to Home</a>
     </div>
   );
-}
+};
 
-export default Login;
+export default LoginPage;

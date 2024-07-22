@@ -1,24 +1,20 @@
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Depends
+from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 import sqlite3
-import psycopg2
-from psycopg2.extras import RealDictCursor
+from typing import List
 
 app = FastAPI()
 
-# List of allowed origins
+# CORS Configuration
 origins = [
     "http://localhost:3000",  # React development server
-    "https://francesco6332.github.io/NordicVirtualF1"# Add other origins if needed
 ]
 
-# Adding CORS middleware to the FastAPI app
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -29,17 +25,19 @@ app.add_middleware(
 
 # Database setup
 DATABASE = 'data/nordic_f1.db'
-DATABASE_URL = "database-1.cdu6cyq064y9.us-east-2.rds.amazonaws.com"
 SECRET_KEY = "a-secret-key"  # Replace with a secure key in production
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # Cryptography context for hashing passwords
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# OAuth2 scheme
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
     return conn
 
 def verify_password(plain_password, hashed_password):
@@ -103,13 +101,17 @@ class CreateIncidentReport(BaseModel):
     driver_id: int
 
 class UpdateIncidentReport(BaseModel):
-    id: int
     description: str
     status: str
 
+class CreateUser(BaseModel):
+    username: str
+    password: str
+    role: str
+
 # Endpoints
 @app.post("/token", response_model=Token)
-def login(form_data: OAuth2PasswordRequestForm = Depends()):
+def login(form_data: Login):
     conn = get_db_connection()
     user = conn.execute("SELECT * FROM users WHERE username = ?", (form_data.username,)).fetchone()
     conn.close()
@@ -147,13 +149,28 @@ def read_users_me(current_user: TokenData = Depends(get_current_user)):
     return {"username": current_user.username, "role": current_user.role}
 
 @app.post("/users/", response_model=User)
-def create_user(user: User, password: str):
+def create_user(user: CreateUser):
+    if user.role not in ["driver", "steward"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid role. Role must be 'driver' or 'steward'."
+        )
     conn = get_db_connection()
-    hashed_password = get_password_hash(password)
-    conn.execute("INSERT INTO users (username, hashed_password, role) VALUES (?, ?, ?)",
-                 (user.username, hashed_password, user.role))
-    conn.commit()
-    conn.close()
+    try:
+        hashed_password = get_password_hash(user.password)
+        conn.execute(
+            "INSERT INTO users (username, hashed_password, role) VALUES (?, ?, ?)",
+            (user.username, hashed_password, user.role)
+        )
+        conn.commit()
+    except sqlite3.IntegrityError:
+        conn.close()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username already exists."
+        )
+    finally:
+        conn.close()
     return user
 
 @app.get("/api/calendar", response_model=List[Race])
@@ -204,4 +221,6 @@ def update_incident(incident_id: int, report: UpdateIncidentReport, current_user
     conn.commit()
     updated_report = cursor.execute('SELECT * FROM incidents WHERE id = ?', (incident_id,)).fetchone()
     conn.close()
+    if updated_report is None:
+        raise HTTPException(status_code=404, detail="Incident not found")
     return dict(updated_report)

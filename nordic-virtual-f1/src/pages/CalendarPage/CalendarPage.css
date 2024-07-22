@@ -1,0 +1,58 @@
+/* CalendarPage.css */
+
+.calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(to right, #1f1c2c, #928DAB);
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+  }
+  
+  .calendar h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: #e74c3c;
+    text-shadow: 0 4px 8px rgba(231, 76, 60, 0.8);
+  }
+  
+  .calendar ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    max-width: 900px;
+  }
+  
+  .calendar li {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transition: background 0.3s ease;
+  }
+  
+  .calendar li:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  .calendar h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #f39c12;
+    margin: 0;
+  }
+  
+  .calendar p {
+    font-size: 1.2rem;
+    color: #ecf0f1;
+    margin: 0.5rem 0 0;
+  }
+  
+  .calendar p.date {
+    font-style: italic;
+  }
+  

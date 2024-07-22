@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ReportIncident() {
+function IncidentReporting() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ function ReportIncident() {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://18.156.77.207:8000/api/report_incident', {
+      const response = await fetch('http://localhost:8000/api/report_incident', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,4 +63,4 @@ function ReportIncident() {
   );
 }
 
-export default ReportIncident;
+export default IncidentReporting;

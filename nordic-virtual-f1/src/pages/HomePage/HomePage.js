@@ -1,20 +1,36 @@
-// frontend/src/pages/HomePage.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './HomePage.css';
 
 function HomePage() {
   return (
     <div className="container">
       <h1>Welcome to the Nordic Virtual F1 League</h1>
-      <p>Please select your login type:</p>
-      <ul>
-        <li>
-          <a href="/login?type=driver">Driver Login</a>
-        </li>
-        <li>
-          <a href="/login?type=steward">Steward Login</a>
-        </li>
-      </ul>
+      <p>Please select your action:</p>
+      <div className="options">
+        <div className="option">
+          <h2>Login</h2>
+          <ul>
+            <li>
+              <Link to="/login?type=driver" className="link">Driver Login</Link>
+            </li>
+            <li>
+              <Link to="/login?type=steward" className="link">Steward Login</Link>
+            </li>
+          </ul>
+        </div>
+        <div className="option">
+          <h2>Register</h2>
+          <ul>
+            <li>
+              <Link to="/register?type=driver" className="link">Driver Register</Link>
+            </li>
+            <li>
+              <Link to="/register?type=steward" className="link">Steward Register</Link>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

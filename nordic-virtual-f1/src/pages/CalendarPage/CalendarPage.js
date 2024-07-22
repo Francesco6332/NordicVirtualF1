@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import './CalendarPage.css'; // Import the CSS file for styling
 
-function Calendar() {
+function CalendarPage() {
   const [races, setRaces] = useState([]);
 
   useEffect(() => {
     const fetchRaces = async () => {
-      const response = await fetch('http://18.156.77.207:8000/api/calendar');
+      const response = await fetch('http://localhost:8000/api/calendar');
       const data = await response.json();
       setRaces(data);
     };
@@ -20,7 +21,7 @@ function Calendar() {
         {races.map((race) => (
           <li key={race.id}>
             <h2>{race.grand_prix}</h2>
-            <p>Date: {race.date}</p>
+            <p className="date">Date: {race.date}</p>
           </li>
         ))}
       </ul>
@@ -28,4 +29,4 @@ function Calendar() {
   );
 }
 
-export default Calendar;
+export default CalendarPage;

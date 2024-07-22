@@ -4,3 +4,4 @@ pydantic
 sqlite3
 passlib
 python-jose
+psycopg2

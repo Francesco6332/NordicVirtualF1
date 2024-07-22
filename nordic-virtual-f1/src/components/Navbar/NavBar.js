@@ -1,58 +1,58 @@
 // frontend/src/components/Navbar.js
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaHome, FaNewspaper, FaTachometerAlt, FaCalendarAlt, FaExclamationTriangle, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faNewspaper, faChartLine, faCalendarAlt, faFlag, faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import './NavBar.css';
 
-function Navbar() {
-  const [isNavOpen, setIsNavOpen] = useState(false);
+function NavBar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     navigate('/login');
   };
 
-  const handleToggle = () => {
-    setIsNavOpen(!isNavOpen);
-  };
+  const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
+
+  if (!token) {
+    return null; // Don't render Navbar if not logged in
+  }
 
   return (
     <nav className="navbar">
-      <div className="navbar-container">
-        <Link to="/" className="navbar-logo">Nordic F1</Link>
-        <ul className={`navbar-list ${isNavOpen ? 'active' : ''}`}>
-          <li className="navbar-item">
-            <Link to="/" className="navbar-link"><FaHome className="icon"/> Home</Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/news" className="navbar-link"><FaNewspaper className="icon"/> News</Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/standings" className="navbar-link"><FaTachometerAlt className="icon"/> Standings</Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/calendar" className="navbar-link"><FaCalendarAlt className="icon"/> Calendar</Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/report-incident" className="navbar-link"><FaExclamationTriangle className="icon"/> Report Incident</Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/driver-dashboard" className="navbar-link"><FaUserCircle className="icon"/> Driver Dashboard</Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/steward-dashboard" className="navbar-link"><FaUserCircle className="icon"/> Steward Dashboard</Link>
-          </li>
-          <li className="navbar-item">
-            <button onClick={handleLogout} className="logout-button"><FaSignOutAlt className="icon"/> Logout</button>
-          </li>
-        </ul>
-        <div className="nav-toggle" onClick={handleToggle}>
-          <span className="nav-toggle-icon"></span>
-        </div>
-      </div>
+      <ul className="navbar-list">
+        <li className="navbar-item">
+          <Link to="/"><FontAwesomeIcon icon={faHome} /> Home</Link>
+        </li>
+        <li className="navbar-item">
+          <Link to="/news"><FontAwesomeIcon icon={faNewspaper} /> News</Link>
+        </li>
+        <li className="navbar-item">
+         <Link to="/standings"><FontAwesomeIcon icon={faChartLine} /> Standings</Link>
+        </li> 
+        <li className="navbar-item">
+          <Link to="/calendar"><FontAwesomeIcon icon={faCalendarAlt} /> Calendar</Link>
+        </li>
+       <li className="navbar-item">
+          <Link to="/report-incident"><FontAwesomeIcon icon={faFlag} /> Report Incident</Link>
+        </li>
+        { role === 'driver' && <li className="navbar-item">
+         <Link to="/driver-dashboard"><FontAwesomeIcon icon={faUser} /> Driver Dashboard</Link>
+        </li>}
+        { role === 'steward' && <li className="navbar-item">
+          <Link to="/steward-dashboard"><FontAwesomeIcon icon={faUser} /> Steward Dashboard</Link>
+        </li> }
+        <li className="navbar-item">
+          <button onClick={handleLogout} className="logout-button">
+            <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+          </button>
+        </li>
+      </ul>
     </nav>
   );
 }
 
-export default Navbar;
+export default NavBar;

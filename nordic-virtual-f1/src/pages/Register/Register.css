@@ -1,5 +1,5 @@
-/* LoginPage.css */
-.login-container {
+/* Register.css */
+.register-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,13 +11,13 @@
     text-align: center;
   }
   
-  .login-container h2 {
+  .register-container h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     font-weight: 700;
   }
   
-  .login-container form {
+  .register-container form {
     width: 100%;
     max-width: 400px;
     background: rgba(0, 0, 0, 0.7);
@@ -26,12 +26,12 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
   
-  .login-container label {
+  .register-container label {
     display: block;
     margin-bottom: 1rem;
   }
   
-  .login-container input {
+  .register-container input {
     width: calc(100% - 20px);
     padding: 10px;
     margin-top: 5px;
@@ -41,7 +41,7 @@
     color: #333;
   }
   
-  .login-container button {
+  .register-container button {
     width: 100%;
     padding: 10px;
     border: none;
@@ -53,7 +53,7 @@
     transition: background 0.3s ease;
   }
   
-  .login-container button:hover {
+  .register-container button:hover {
     background: #ff6f00;
   }
   
@@ -62,7 +62,7 @@
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background: #217ca0;
+    background: #007bff;
     color: white;
     font-size: 1rem;
     cursor: pointer;
@@ -71,6 +71,6 @@
   }
   
   .back-home-button:hover {
-    background: #2f8ca3;
+    background: #0056b3;
   }
   

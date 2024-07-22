@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-function News() {
+function NewsPage() {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
     // Fetch news from the backend
     const fetchNews = async () => {
-      const response = await fetch('http://18.156.77.207:8000/api/news');
+      const response = await fetch('http://localhost:8000/api/news');
       const data = await response.json();
       setNews(data);
     };
@@ -29,4 +29,4 @@ function News() {
   );
 }
 
-export default News;
+export default NewsPage;
