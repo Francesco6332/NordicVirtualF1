@@ -6,7 +6,7 @@ function NewsPage() {
   useEffect(() => {
     // Fetch news from the backend
     const fetchNews = async () => {
-      const response = await fetch('http://ec2-18-194-185-210.eu-central-1.compute.amazonaws.com:8000/api/news');
+      const response = await fetch('http://18.194.185.210:8000/api/news');
       const data = await response.json();
       setNews(data);
     };

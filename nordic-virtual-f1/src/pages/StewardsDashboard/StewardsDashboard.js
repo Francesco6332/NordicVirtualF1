@@ -25,7 +25,7 @@ function StewardsDashboard() {
 
   const handleUpdate = async (id, status) => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://ec2-18-194-185-210.eu-central-1.compute.amazonaws.com:8000/api/incidents/${id}`, {
+    const response = await fetch(`http://18.194.185.210:8000/api/incidents/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
