@@ -12,7 +12,7 @@ app = FastAPI()
 
 # CORS Configuration
 origins = [
-    "http://localhost:3000",  # React development server
+    "http://ec2-3-77-234-169.eu-central-1.compute.amazonaws.com:3000",  # React development server
 ]
 
 app.add_middleware(

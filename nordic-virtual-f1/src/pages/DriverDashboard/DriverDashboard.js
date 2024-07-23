@@ -10,7 +10,7 @@ function DriverDashboard() {
     const fetchIncidents = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await fetch('http://localhost:8000/api/incidents', {
+        const response = await fetch('http://ec2-18-194-185-210.eu-central-1.compute.amazonaws.com:8000/api/incidents', {
           headers: { Authorization: `Bearer ${token}` }
         });
 

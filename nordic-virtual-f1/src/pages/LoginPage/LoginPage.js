@@ -27,7 +27,7 @@ const LoginPage = () => {
       localStorage.setItem('token', data.access_token);
 
       // Fetch the user role to decide the redirection
-      const userResponse = await fetch('http://localhost:8000/users/me', {
+      const userResponse = await fetch('http://ec2-18-194-185-210.eu-central-1.compute.amazonaws.com:8000/users/me', {
         headers: { Authorization: `Bearer ${data.access_token}` }
       });
       const userData = await userResponse.json();

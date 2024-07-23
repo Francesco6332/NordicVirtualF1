@@ -20,7 +20,7 @@ const Register = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:8000/users/', {
+      const response = await fetch('http://ec2-18-194-185-210.eu-central-1.compute.amazonaws.com:8000/users/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, role: type }), // Use the extracted type as role
