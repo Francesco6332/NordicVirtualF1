@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.css';  // Import the CSS file
+import './LoginPage.css'; // Ensure you have the corresponding CSS file
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -16,23 +17,32 @@ const LoginPage = () => {
         body: JSON.stringify({ username, password }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.access_token);
-        navigate('/');
-      } else {
-        const error = await response.json();
-        alert(`Login failed: ${error.detail}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.detail || 'Login failed');
+        return;
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Login failed');
+
+      const data = await response.json();
+      localStorage.setItem('token', data.access_token);
+
+      // Fetch the user role to decide the redirection
+      const userResponse = await fetch('http://localhost:8000/users/me', {
+        headers: { Authorization: `Bearer ${data.access_token}` }
+      });
+      const userData = await userResponse.json();
+      localStorage.setItem('role', userData.role);
+
+      navigate('/main'); // Redirect to the main page or any dashboard page
+    } catch (err) {
+      setError('An error occurred while logging in');
     }
   };
 
   return (
     <div className="login-container">
       <h2>Login</h2>
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleLogin}>
         <label>
           Username:
@@ -44,7 +54,10 @@ const LoginPage = () => {
         </label>
         <button type="submit">Login</button>
       </form>
-      <a href="/" className="back-home-button">Back to Home</a>
+      
+      <div className="register-button-container">
+        <button className="to-register-button" type="button" onClick={() => navigate('/register')}>Go to Register</button>
+      </div>
     </div>
   );
 };

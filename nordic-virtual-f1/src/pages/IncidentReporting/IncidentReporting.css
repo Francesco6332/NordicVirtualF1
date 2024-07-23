@@ -1,0 +1,70 @@
+/* IncidentReporting.css */
+.incident-reporting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to right, #5350f3, #252525);
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+  }
+  
+  .incident-reporting h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  
+  .incident-reporting form {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .incident-reporting .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .incident-reporting label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .incident-reporting input,
+  .incident-reporting textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+    background: #f5f5f5;
+    color: #333;
+  }
+  
+  .incident-reporting textarea {
+    height: 100px;
+    resize: vertical; /* Allows users to resize the textarea vertically */
+  }
+  
+  .incident-reporting button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #9b3506;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .incident-reporting button:hover {
+    background: #ff6f00;
+  }
+  

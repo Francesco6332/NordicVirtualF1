@@ -12,11 +12,9 @@ function HomePage() {
           <h2>Login</h2>
           <ul>
             <li>
-              <Link to="/login?type=driver" className="link">Driver Login</Link>
+              <Link to="/login" className="link">Login</Link>
             </li>
-            <li>
-              <Link to="/login?type=steward" className="link">Steward Login</Link>
-            </li>
+
           </ul>
         </div>
         <div className="option">

@@ -9,6 +9,7 @@ import DriverDashboard from './pages/DriverDashboard/DriverDashboard';
 import StewardsDashboard from './pages/StewardsDashboard/StewardsDashboard';
 import LoginPage from './pages/LoginPage/LoginPage';
 import Register from './pages/Register/Register';
+import MainPage from './pages/MainPage/MainPage';
 import NavBar from './components/Navbar/NavBar';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import './App.css';
@@ -21,16 +22,22 @@ function App() {
     <div className="App">
       {token && <NavBar />}
       <Routes>
-        <Route path="/" Component={HomePage} />
-        <Route path="/login" Component={LoginPage} />
-        <Route path="/register" Component={Register} />
-        <Route path="/news" element={<PrivateRoute element={NewsPage} />} />
-        <Route path="/standings" element={<PrivateRoute element={StandingsPage} />} />
-        <Route path="/calendar" element={<PrivateRoute element={CalendarPage} />} />
-        <Route path="/report-incident" element={token && role === 'driver' ? <PrivateRoute element={IncidentReporting} /> : <Navigate to="/login" />} />
-        <Route path="/driver-dashboard" element={token && role === 'driver' ? <PrivateRoute element={DriverDashboard} /> : <Navigate to="/login" />} />
-        <Route path="/steward-dashboard" element={token && role === 'steward' ? <PrivateRoute element={StewardsDashboard} /> : <Navigate to="/login" />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<Register />} />
+        {token ? (
+          <>
+            <Route path="/" element={<Navigate to="/main" />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/news" element={<PrivateRoute Component={NewsPage} />} />
+            <Route path="/standings" element={<PrivateRoute Component={StandingsPage} />} />
+            <Route path="/calendar" element={<PrivateRoute Component={CalendarPage} />} />
+            <Route path="/report-incident" element={role === 'driver' ? <PrivateRoute Component={IncidentReporting} /> : <Navigate to="/login" />} />
+            <Route path="/driver-dashboard" element={role === 'driver' ? <PrivateRoute Component={DriverDashboard} /> : <Navigate to="/login" />} />
+            <Route path="/steward-dashboard" element={role === 'steward' ? <PrivateRoute Component={StewardsDashboard} /> : <Navigate to="/login" />} />
+          </>
+        ) : (
+          <Route path="/" element={<HomePage />} />
+        )}
       </Routes>
     </div>
   );

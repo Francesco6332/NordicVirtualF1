@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import './Register.css'; // Ensure you have the corresponding CSS file
 
 const Register = () => {
@@ -8,6 +8,10 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams(); // Extract query parameters from the URL
+
+  // Extract the role from the query parameters
+  const type = searchParams.get('type') || 'driver'; // Default to 'driver' if no type is provided
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -19,7 +23,7 @@ const Register = () => {
       const response = await fetch('http://localhost:8000/users/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, role: 'driver' }), // Adjust role as needed
+        body: JSON.stringify({ username, password, role: type }), // Use the extracted type as role
       });
 
       if (!response.ok) {
@@ -55,7 +59,7 @@ const Register = () => {
       </form>
       
       <div className="home-button-container">
-        <button className="back-home-button"type="button" onClick={() => navigate('/')}>Back to Home</button>
+        <button className="back-home-button" type="button" onClick={() => navigate('/')}>Back to Home</button>
       </div>
     </div>
   );

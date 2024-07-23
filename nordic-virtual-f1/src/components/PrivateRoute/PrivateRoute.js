@@ -1,17 +1,14 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-// The PrivateRoute component now expects an element prop
-const PrivateRoute = ({ element: Element }) => {
+const PrivateRoute = ({ Component }) => {
   const token = localStorage.getItem('token');
   
-  // Redirect to login if there is no token
   if (!token) {
     return <Navigate to="/login" />;
   }
 
-  // Render the element if token exists
-  return <Element />;
+  return <Component />;
 };
 
 export default PrivateRoute;

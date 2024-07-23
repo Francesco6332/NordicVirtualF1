@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './IncidentReporting.css'; // Ensure you have the corresponding CSS file
 
 function IncidentReporting() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [link, setTextLink] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,6 +21,7 @@ function IncidentReporting() {
         body: JSON.stringify({
           title,
           description,
+          link,  // Include textLink in the request body
           driver_id: 1 // Update this with the actual driver ID
         })
       });
@@ -35,7 +38,7 @@ function IncidentReporting() {
   };
 
   return (
-    <div className="report-incident">
+    <div className="incident-reporting">
       <h1>Report an Incident</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -56,6 +59,16 @@ function IncidentReporting() {
             onChange={(e) => setDescription(e.target.value)}
             required
           ></textarea>
+        </div>
+        <div className="form-group">
+          <label htmlFor="textLink">Text Link</label>
+          <input
+            type="url"
+            id="textLink"
+            value={link}
+            onChange={(e) => setTextLink(e.target.value)}
+            required
+          />
         </div>
         <button type="submit">Submit</button>
       </form>

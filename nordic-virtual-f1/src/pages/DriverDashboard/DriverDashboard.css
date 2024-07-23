@@ -1,0 +1,122 @@
+/* DriverDashboard.css */
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(to right, #1f1c2c, #928DAB);
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+  }
+  
+  .dashboard h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  
+  .dashboard h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  
+  .dashboard ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .dashboard li {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .dashboard li:hover {
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+  }
+  
+  .dashboard h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .dashboard p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dashboard a {
+    color: #4caf50;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .dashboard a:hover {
+    text-decoration: underline;
+  }
+  
+  .dashboard .error-message {
+    color: #ff0000;
+  }
+  
+  .dashboard .loading-message {
+    color: #f1c40f;
+  }
+  
+
+  /* DriverDashboard.css */
+.dashboard {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .dashboard h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .dashboard h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .dashboard ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .dashboard li {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .dashboard a:hover {
+    text-decoration: underline;
+  }
+  /* Add this to your CSS file */
+  .notification {
+    background-color: #e7dc3f;
+    color: #000000;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ffd20b;
+    border-radius: 4px;
+  }
+  

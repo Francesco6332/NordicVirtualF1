@@ -56,6 +56,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
+
 # Models
 class User(BaseModel):
     username: str
@@ -71,6 +72,7 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: str
     role: str
+    id: int
 
 class Login(BaseModel):
     username: str
@@ -123,8 +125,9 @@ def login(form_data: Login):
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"username": user["username"], "role": user["role"]}, expires_delta=access_token_expires
+        data={"username": user["username"], "role": user["role"], "id": user["id"]}, expires_delta=access_token_expires
     )
+
     return {"access_token": access_token, "token_type": "bearer"}
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
@@ -137,9 +140,10 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("username")
         role: str = payload.get("role")
-        if username is None or role is None:
+        user_id: int = payload.get("id")  # Add id retrieval
+        if username is None or role is None or user_id is None:
             raise credentials_exception
-        token_data = TokenData(username=username, role=role)
+        token_data = TokenData(username=username, role=role, id=user_id)
     except JWTError:
         raise credentials_exception
     return token_data
@@ -194,7 +198,7 @@ def report_incident(report: CreateIncidentReport, current_user: TokenData = Depe
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('INSERT INTO incidents (title, description, status, driver_id) VALUES (?, ?, ?, ?)',
-                   (report.title, report.description, report.status, report.driver_id))
+                   (report.title, report.description, report.status, current_user.id))
     conn.commit()
     new_id = cursor.lastrowid
     conn.close()
@@ -204,16 +208,19 @@ def report_incident(report: CreateIncidentReport, current_user: TokenData = Depe
 def get_incidents(current_user: TokenData = Depends(get_current_user)):
     conn = get_db_connection()
     if current_user.role == "driver":
-        incidents = conn.execute('SELECT * FROM incidents WHERE driver_id = ?', (current_user.username,)).fetchall()
+        # Use driver_id correctly
+        incidents = conn.execute('SELECT * FROM incidents WHERE driver_id = ?', (current_user.id,)).fetchall()
     elif current_user.role == "steward":
         incidents = conn.execute('SELECT * FROM incidents').fetchall()
     conn.close()
     return [dict(incident) for incident in incidents]
 
+
 @app.put("/api/incidents/{incident_id}", response_model=IncidentReport)
 def update_incident(incident_id: int, report: UpdateIncidentReport, current_user: TokenData = Depends(get_current_user)):
     if current_user.role != "steward":
         raise HTTPException(status_code=403, detail="Only stewards can update incidents")
+
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('UPDATE incidents SET description = ?, status = ? WHERE id = ?',

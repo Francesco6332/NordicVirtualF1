@@ -1,56 +1,42 @@
-// frontend/src/components/Navbar.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faNewspaper, faChartLine, faCalendarAlt, faFlag, faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import './NavBar.css';
+import './NavBar.css'; // Import the CSS file
 
 function NavBar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    navigate('/login');
+    localStorage.clear();
+    navigate('/');
   };
 
-  const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
-
-  if (!token) {
-    return null; // Don't render Navbar if not logged in
-  }
 
   return (
     <nav className="navbar">
-      <ul className="navbar-list">
-        <li className="navbar-item">
-          <Link to="/"><FontAwesomeIcon icon={faHome} /> Home</Link>
-        </li>
-        <li className="navbar-item">
-          <Link to="/news"><FontAwesomeIcon icon={faNewspaper} /> News</Link>
-        </li>
-        <li className="navbar-item">
-         <Link to="/standings"><FontAwesomeIcon icon={faChartLine} /> Standings</Link>
-        </li> 
-        <li className="navbar-item">
-          <Link to="/calendar"><FontAwesomeIcon icon={faCalendarAlt} /> Calendar</Link>
-        </li>
-       <li className="navbar-item">
-          <Link to="/report-incident"><FontAwesomeIcon icon={faFlag} /> Report Incident</Link>
-        </li>
-        { role === 'driver' && <li className="navbar-item">
-         <Link to="/driver-dashboard"><FontAwesomeIcon icon={faUser} /> Driver Dashboard</Link>
-        </li>}
-        { role === 'steward' && <li className="navbar-item">
-          <Link to="/steward-dashboard"><FontAwesomeIcon icon={faUser} /> Steward Dashboard</Link>
-        </li> }
-        <li className="navbar-item">
-          <button onClick={handleLogout} className="logout-button">
-            <FontAwesomeIcon icon={faSignOutAlt} /> Logout
-          </button>
-        </li>
-      </ul>
+      <div className="navbar-container">
+        <div className="navbar-logo">
+          <Link to="/main">Nordic Virtual F1</Link>
+        </div>
+        <ul className="navbar-menu">
+          <li className="navbar-item"><Link to="/main">Home</Link></li>
+          <li className="navbar-item"><Link to="/news">News</Link></li>
+          <li className="navbar-item"><Link to="/standings">Standings</Link></li>
+          <li className="navbar-item"><Link to="/calendar">Calendar</Link></li>
+          {role === 'driver' && (
+            <>
+              <li className="navbar-item"><Link to="/report-incident">Report Incident</Link></li>
+              <li className="navbar-item"><Link to="/driver-dashboard">Driver Dashboard</Link></li>
+            </>
+          )}
+          {role === 'steward' && (
+            <li className="navbar-item"><Link to="/steward-dashboard">Steward Dashboard</Link></li>
+          )}
+          <li className="navbar-item">
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
+          </li>
+        </ul>
+      </div>
     </nav>
   );
 }
