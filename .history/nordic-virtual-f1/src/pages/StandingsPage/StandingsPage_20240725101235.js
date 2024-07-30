@@ -6,7 +6,7 @@ function StandingsPage() {
 
   useEffect(() => {
     const fetchStandings = async () => {
-      const response = await fetch('http://localhost:8000/api/standings'); // 18.194.185.210
+      const response = await fetch('http://18.194.185.210:8000/api/standings');
       const data = await response.json();
       setStandings(data);
     };

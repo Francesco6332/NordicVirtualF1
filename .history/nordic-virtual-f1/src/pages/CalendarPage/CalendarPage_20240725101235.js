@@ -6,7 +6,7 @@ function CalendarPage() {
 
   useEffect(() => {
     const fetchRaces = async () => {
-      const response = await fetch('http://localhost:8000/api/calendar');
+      const response = await fetch('http://18.194.185.210:8000/api/calendar');
       const data = await response.json();
       setRaces(data);
     };

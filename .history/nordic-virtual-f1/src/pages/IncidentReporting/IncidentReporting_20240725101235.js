@@ -12,7 +12,7 @@ function IncidentReporting() {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:8000/api/report_incident', {
+      const response = await fetch('http://18.194.185.210:8000/api/report_incident', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
